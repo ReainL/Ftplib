@@ -38,26 +38,3 @@ def get_conn(sys_code='DPS'):
     else:
         raise Exception("源系统%s数据库连接失败. " % sys_code)
 
-
-def insert_sys_log(log_content):
-    """
-    添加系统日志
-    :param log_content:
-    :return:
-    """
-    param_val = (log_content['log_type'],
-                 log_content['log_level'],
-                 log_content['msg'],
-                 log_content['create_date'],
-                 log_content['create_user'],)
-    sql_insert_sys_log = """
-    INSERT INTO web.sys_log(id, log_type, log_level, msg, create_date, create_user)
-    VALUES(nextval('web.seq_log_id'), %s, %s, %s, %s, %s)
-    """
-    conn = get_conn()
-    try:
-        with conn:
-            with conn.cursor() as cur:
-                cur.execute(sql_insert_sys_log, param_val)
-    finally:
-        conn.close()
